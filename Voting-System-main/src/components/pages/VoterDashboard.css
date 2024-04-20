@@ -1,0 +1,134 @@
+* {
+  box-sizing: border-box;
+}
+.voter-dashboard {
+  margin: 10vh 5vw;
+  padding: 0;
+}
+h2 {
+  text-align: center;
+  margin: 2rem auto;
+}
+.box-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.election-info,
+.voter-info {
+  flex-basis: 43%;
+  height: 250px;
+  background-color: #96db79;
+  padding: 0 1rem;
+  border-radius: 5px;
+}
+.info-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.election-date {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+li {
+  font-weight: 500;
+}
+.election-date span {
+  color: rgb(82, 79, 79);
+  margin-right: 4px;
+  font-weight: 400;
+}
+.info {
+  padding-left: 1rem;
+}
+
+.voter-details {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.voter-details .titles {
+  color: rgb(82, 79, 79);
+}
+
+.voter-details .description {
+  font-weight: 500;
+}
+
+.start-vote {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background-color: #96db79;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 5px;
+  width: 89%;
+}
+
+.text-div {
+  flex-basis: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.text-div h2,
+.text-div p {
+  text-align: left;
+  margin: 10px 0;
+}
+
+.img-div {
+  flex-basis: 30%;
+  text-align: center;
+}
+.button {
+  width: 200px;
+  color: rgb(240, 233, 233);
+  background-color: rgb(4, 59, 20);
+  padding: 10px 10px;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+}
+.button:hover {
+  background-color: #96db79;
+  color: #043b14;
+  border: 1px solid #043b14;
+  cursor: pointer;
+}
+
+.start-vote img {
+  width: 90%;
+  border-radius: 10px;
+  border: 1px solid #043b14;
+}
+
+@media screen and (width < 768px) {
+  .box-container,
+  .start-vote {
+    flex-direction: column;
+  }
+  .election-info,
+  .voter-info,
+  .start-vote {
+    width: 95%;
+  }
+  .text-div {
+    align-items: center;
+  }
+  .text-div p {
+    text-align: center;
+  }
+}

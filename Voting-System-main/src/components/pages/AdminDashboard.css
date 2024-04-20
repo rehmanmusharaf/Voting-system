@@ -1,0 +1,89 @@
+.admin-dashboard {
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+h1 {
+  text-align: center;
+}
+
+.status {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.real-time-results,
+.candidates,
+.parties {
+  width: 40vw;
+  background-color: #96db79;
+  margin: 0 auto 20px;
+  text-align: center;
+  padding: 1rem 0;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.real-time-results h3,
+.candidates h3,
+.parties h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.real-time-results ul,
+.candidates ul,
+.parties ul {
+  list-style: none;
+  padding: 0;
+}
+
+.real-time-results ul li,
+.candidates ul li,
+.parties ul li {
+  margin-bottom: 5px;
+}
+
+.candidates,
+.parties {
+  margin-bottom: 20px;
+}
+
+.btn-container button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #043b14;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-container button:hover {
+  background-color: #96db79;
+  color: #043b14;
+  border: 1px solid #043b14;
+}
+
+.btn-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+@media screen and (width < 768px) {
+  .btn-container {
+    flex-direction: column;
+    gap: 0;
+  }
+  .real-time-results,
+  .candidates,
+  .parties {
+    width: 100%;
+  }
+}

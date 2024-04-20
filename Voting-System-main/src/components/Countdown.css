@@ -1,0 +1,53 @@
+.timer {
+  font-family: "Arial", sans-serif;
+  font-size: 1.5em;
+  text-align: center;
+  color: #333;
+  background-color: #96db79;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  /* display: inline-block; */
+}
+.intervals-parent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer span {
+  margin: 0 10px;
+}
+.child-intrevals {
+  height: 160px;
+  width: 160px;
+  border: 5px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  border-radius: 50%;
+  color: #043b14;
+}
+
+.testimonial-card .card-up {
+  height: 120px;
+  overflow: hidden;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.aqua-gradient {
+  background: linear-gradient(40deg, #2096ff, #05ffa3) !important;
+}
+
+.testimonial-card .avatar {
+  width: 120px;
+  margin-top: -60px;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 50%;
+}

@@ -1,0 +1,78 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 80vw;
+  margin: 2vh auto 10vh;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 2rem;
+}
+
+.intro {
+  width: 400px;
+  align-self: center;
+  background-color: rgb(150, 219, 121);
+  margin-top: 20px;
+  padding-left: 20px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  gap: 5px;
+}
+
+input {
+  width: 90%;
+  height: 25px;
+  border: none;
+  border-bottom: 2px solid #96db79;
+}
+input:focus {
+  border: none;
+  border-bottom: 2px solid #043b14;
+  outline: none;
+}
+input[type="submit"] {
+  width: 30%;
+  height: 30px;
+  margin-top: 10px;
+  color: rgb(240, 233, 233);
+  background-color: rgb(4, 59, 20);
+  padding: 5px 10px;
+  border: none;
+}
+input[type="submit"]:hover {
+  background-color: rgb(240, 233, 233);
+  color: rgb(4, 59, 20);
+  cursor: pointer;
+  border: 2px solid rgb(4, 59, 20);
+}
+
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .intro {
+    width: 80%;
+  }
+}

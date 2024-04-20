@@ -1,0 +1,103 @@
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+}
+h2 {
+  margin: 15px 0 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  margin: 0;
+}
+
+p {
+  margin: 10px 0;
+  text-align: center;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+main .head-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #96db79;
+  padding-bottom: 1rem;
+}
+.head-wrap .head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+}
+
+main .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 1rem 2rem;
+  width: 450px;
+}
+
+.card p {
+  margin-top: 0;
+  text-align: left;
+}
+
+.accounts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.button,
+button {
+  width: 200px;
+  color: rgb(240, 233, 233);
+  background-color: rgb(4, 59, 20);
+  padding: 10px 10px;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+}
+.button:hover,
+button:hover {
+  background-color: #96db79;
+  color: #043b14;
+  border: 1px solid #043b14;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .intro,
+  .accounts {
+    width: 80%;
+  }
+  .accounts .button {
+    width: 50%;
+  }
+}

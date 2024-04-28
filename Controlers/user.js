@@ -8,7 +8,10 @@ var jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail.js");
 const multer = require("multer");
 const sendToken = require("../utils/sendToken.js");
-const { isAuthenticated } = require("../middleware/auth.js");
+const {
+  isAuthenticated,
+  isAdminAuthenticated,
+} = require("../middleware/auth.js");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -32,11 +35,11 @@ router.post("/api/create-user", async (req, res, next) => {
     const { voter_id, full_name, dob, password, constituency, uniquevoter_id } =
       req.body;
     if (
-      !voter_id &&
-      !full_name &&
-      !dob &&
-      !password &&
-      !constituency &&
+      !voter_id ||
+      !full_name ||
+      !dob ||
+      !password ||
+      !constituency ||
       !uniquevoter_id
     ) {
       return res
@@ -112,24 +115,16 @@ async function createactivationtoken(user) {
 
 router.post("/api/activation", async (req, res, next) => {
   try {
-    console.log("activation end Point Hit");
+    // console.log("activation end Point Hit");
     const { activation_token } = req.body;
     const newuser = jwt.verify(activation_token, process.env.activationkey);
-
+    console.log("user is:", newuser);
     if (!newuser) {
       return next(new ErrorHandler("invalid Handler", 400));
     }
 
     const { voter_id, full_name, dob, password, constituency, uniquevoter_id } =
       newuser;
-    console.log(
-      voter_id,
-      full_name,
-      dob,
-      password,
-      constituency,
-      uniquevoter_id
-    );
     const result = await new usermodel({
       voter_id,
       full_name,
@@ -138,10 +133,12 @@ router.post("/api/activation", async (req, res, next) => {
       constituency,
       uniquevoter_id,
     });
+    console.log("result of user save", result);
     await result.save();
     sendToken(result, 201, res);
     // }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ success: false, message: error.message, error });
   }
 });
@@ -213,6 +210,57 @@ router.get("/user/logout", (req, res, next) => {
     res
       .status(500)
       .json({ success: false, message: "Somethinng Went Wrong ", error });
+  }
+});
+
+// isAdminAuthenticated,
+router.get("/getallusers", async (req, res, next) => {
+  try {
+    const allusers = await usermodel.find();
+    const { page } = req.query || 0;
+    let totalusers = 0;
+    // if (page == 0) {
+    totalusers = await usermodel.find({ role: "user" }).countDocuments();
+    // }
+    const userperpage = 5;
+    const users = await usermodel
+      .find({ role: "user" })
+      .skip(page * userperpage)
+      .limit(userperpage);
+    res.status(200).json({
+      success: true,
+      message: `user for page ${page}`,
+      totalusers,
+      users,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Srever Error!" });
+  }
+});
+router.get("/getvotedusers", isAdminAuthenticated, async (req, res, nesxt) => {
+  try {
+    const { page } = req.query || 0;
+    const userperpage = 5;
+    totalusers = await usermodel
+      .find({ vote_status: { status: true }, role: "user" })
+      .countDocuments();
+    // console.log("total user who cast vote:", totalusers);
+    const users = await usermodel
+      .find({ vote_status: { status: true }, role: "user" })
+      .skip(page * userperpage)
+      .limit(userperpage);
+    return res
+      .status(200)
+      .json({ success: true, message: "user who vote successfully", users });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Problem",
+      error: error.message,
+    });
   }
 });
 module.exports = router;

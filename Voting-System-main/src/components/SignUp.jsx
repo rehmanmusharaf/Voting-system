@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./SignUp.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useConstituency } from "./Context/constituency";
 function SignUp() {
+  const [constituencies] = useConstituency();
   const [voterId, setVoterId] = useState("");
   const [fullName, setFullName] = useState("");
   const [dob, setDob] = useState(null);
   const [password, setPassword] = useState("");
   const [constituency, setConstituency] = useState("");
   const [uniqueVoterId, setUniqueVoterId] = useState("");
+
   const clearState = () => {
     setVoterId("");
     setFullName("");
@@ -44,8 +47,8 @@ function SignUp() {
     }
   };
   useEffect(() => {
-    // console.log("SERVER url is:", process.env.REACT_APP_server);
-  }, []);
+    // console.log("Constituencies array is:", constituencies);
+  }, [constituencies]);
   return (
     <>
       <div className="content">
@@ -87,14 +90,36 @@ function SignUp() {
                 required
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <label for="constituency">Constituency:</label>
-              <input
+              {constituencies.length > 0 && (
+                <>
+                  <label for="constituency">Constituency:</label>
+                  <select
+                    id="constituency"
+                    name="constituency"
+                    required
+                    value={constituency} // The current state value is used to control the select
+                    onChange={(e) => setConstituency(e.target.value)} // Event handler for when the select value changes
+                    defaultValue="Select a Constituency"
+                  >
+                    <option value="" disabled>
+                      Select a Constituency
+                    </option>{" "}
+                    {/* Default option */}
+                    {constituencies.map((constituency, index) => (
+                      <option key={index} value={constituency.constituency}>
+                        {constituency.constituency} {/* Display the option */}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+              {/* <input
                 type="text"
                 id="constituency"
                 name="constituency"
                 required
                 onChange={(e) => setConstituency(e.target.value)}
-              />
+              /> */}
               <label for="uvc">Unique Voter Code:</label>
               <input
                 type="text"

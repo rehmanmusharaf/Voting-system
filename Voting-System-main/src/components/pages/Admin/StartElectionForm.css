@@ -1,0 +1,46 @@
+#container1 {
+  background-color: #191919;
+}
+
+#colorDiv {
+  background-color: #666666;
+  height: 500px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  border-radius: 15px;
+}
+
+form {
+  display: block;
+}
+
+.form-group label {
+  text-align: center;
+}
+
+#submitBtn {
+  margin: auto;
+  display: block;
+  border-radius: 20px;
+  width: 100px;
+}
+
+.large {
+  width: 100%;
+}
+
+#frgPass {
+  color: #d9d9d9;
+}
+
+.page-header {
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
+}
+
+.footer a {
+  color: #d9d9d9;
+}

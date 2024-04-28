@@ -1,37 +1,88 @@
 import React, { useState } from "react";
 import "./BallotPage.css"; // Import your CSS file for styling
-
+import { useSymbols } from "../Context/Symbol";
+import axios from "axios";
+import { toast } from "react-toastify";
 const BallotPage = () => {
-  const [selectedCandidate, setSelectedCandidate] = useState(null);
-  const constituencyList = [
-    "Gilgit-Town",
-    "Northern-Mountain",
-    "Western-Gilgit",
-    "Narum-Valley",
-  ];
-  const candidateList = [
-    "Candidate A",
-    "Candidate B",
-    "Candidate C",
-    "Candidate D",
-  ]; // Your selected candidate names
+  let [symbols] = useSymbols();
 
-  const handleCandidateSelection = (candidate) => {
-    setSelectedCandidate(candidate);
-  };
+  const [selectedparty, setSelectedparty] = useState(null);
 
-  const handleSubmitBallot = () => {
-    // Code to submit the ballot
-    // You can send the selectedCandidate to the backend to record the vote
-    console.log("Ballot submitted for candidate:", selectedCandidate);
-    // You can also disable the form or show a message indicating that the vote has been cast
+  const handleSubmitBallot = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_server}/api/castvote`,
+        selectedparty,
+        {
+          withCredentials: true,
+        }
+      );
+      if (data.success) {
+        toast.success("Vote Cast Successfully");
+        return;
+      } else {
+        toast.error("You ALready Cast Your Vote");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong");
+    }
   };
 
   return (
-    <div className="ballot-container">
-      <h2>Online Ballot</h2>
-      <p>Please select exactly one candidate from your constituency:</p>
-      <div className="constituency-list">
+    // ballot-container
+    <div className=" container div-center">
+      <div className="vote-option-container flex-column rounded ">
+        <h2>Online Ballot</h2>
+        <p>Please select exactly one candidate from your constituency:</p>
+        <div class="widget-wrap">
+          <h1>SIMPLE JS QUIZ</h1>
+          <div id="quizWrap">
+            <div id="quizQn">Quize Question Comes here</div>
+            <form>
+              <div id="quizAns" className="hAns">
+                {symbols &&
+                  symbols.map((value, index) => [
+                    <>
+                      <input
+                        type="radio"
+                        name="quiz"
+                        id="quizo"
+                        value={value.party_name}
+                      />
+                      <label
+                        htmlFor="quizo"
+                        onClick={() =>
+                          setSelectedparty({
+                            party_name: value.party_name,
+                            symbol_name: value.symbol_name,
+                          })
+                        }
+                        className={`${
+                          selectedparty?.party_name == value.party_name
+                            ? "border-dark"
+                            : ""
+                        } `}
+                      >
+                        {value.party_name}
+                      </label>
+                    </>,
+                  ])}
+              </div>
+              <button
+                onClick={handleSubmitBallot}
+                disabled={!selectedparty}
+                style={{ margin: "0px auto" }}
+                className=" mt-2 button z-1]"
+              >
+                Submit Ballot
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {/* <div className="constituency-list">
         {constituencyList.map((constituency, index) => (
           <div key={index} className="constituency-item">
             <h3>{constituency}</h3>
@@ -53,10 +104,7 @@ const BallotPage = () => {
             </div>
           </div>
         ))}
-      </div>
-      <button onClick={handleSubmitBallot} disabled={!selectedCandidate}>
-        Submit Ballot
-      </button>
+      </div> */}
     </div>
   );
 };

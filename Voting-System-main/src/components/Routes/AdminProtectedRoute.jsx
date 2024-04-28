@@ -15,6 +15,7 @@ const AdminProtectedRoute = () => {
     await axios
       .get(`${process.env.REACT_APP_server}/getuser`, { withCredentials: true })
       .then((resp) => {
+        console.log("response for amdin is:", resp);
         if (resp.data.success) {
           if (resp.data.user.role == "admin") {
             setOk(true);
@@ -28,6 +29,7 @@ const AdminProtectedRoute = () => {
         }
       })
       .catch((error) => {
+        console.log("error is:", error);
         window.location.reload();
         window.location.href = "/";
         toast.error("Something Went Wrong");

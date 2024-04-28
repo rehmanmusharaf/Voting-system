@@ -37,7 +37,8 @@ form {
   gap: 5px;
 }
 
-input {
+input,
+select {
   width: 90%;
   height: 25px;
   border: none;

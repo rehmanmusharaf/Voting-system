@@ -32,7 +32,9 @@ function App() {
           <Route path="/admin" element={<AdminProtectedRoute />}>
             <Route path="admin-dashboard" exact Component={AdminDashboard} />
           </Route>
-          <Route path="/ballot" exact Component={BallotPage} />
+          <Route path="/ballot" element={<UserProtectedRoute />}>
+            <Route path="" element={<BallotPage />} />
+          </Route>
           <Route path="/loading" exact Component={Loader} />
           <Route
             path="/activation/:activation_token"

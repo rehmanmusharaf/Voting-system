@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Context/Auth";
 import "./Home.css";
 import Card from "../Card";
 import Countdown from "../Countdown.jsx";
+import Parties from "../Parties.jsx";
+import { useSymbols } from "../Context/Symbol.js";
+import { useElections } from "../Context/election.js";
 function Home() {
+  let [election] = useElections();
+  let [symbols] = useSymbols();
   const [auth] = useAuth();
+  useEffect(() => {
+    console.log("election array is:", election);
+    // console.log("Symbol is:", symbols);
+  }, [symbols]);
   return (
     <div className="">
-      <Countdown />
+      {/* {
+        election&&election.length>0? */}
+      {election &&
+        election.length > 0 &&
+        election.map((value, index) => (
+          <Countdown election={value} key={index} />
+        ))}
+      {/* // :; // } */}
+      <div className="container" style={{ margin: "0px auto" }}>
+        <Parties />
+      </div>
       <div className="content">
         <main>
           <div className="head-wrap">

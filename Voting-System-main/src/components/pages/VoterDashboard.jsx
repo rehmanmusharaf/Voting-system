@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./VoterDashboard.css";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../Context/Auth";
 function VoterDashboard() {
+  let [auth] = useAuth();
+  let [dob, setDob] = useState(null);
+  useEffect(() => {
+    if (auth.user) {
+      let date = auth.user.dob;
+      setDob(date.split("T")[0]);
+    }
+  }, [auth]);
   return (
     <>
       <div className="voter-dashboard">
@@ -34,20 +42,22 @@ function VoterDashboard() {
             <div className="voter-info">
               <div className="info-wrapper">
                 <h3>Voter Profile</h3>
-                <div className="voter-details">
-                  <div className="titles">
-                    <div>Voter ID:</div>
-                    <div>Full Name:</div>
-                    <div>Date of Birth:</div>
-                    <div>Constituency:</div>
+                {auth && auth.user && (
+                  <div className="voter-details">
+                    <div className="titles">
+                      <div>Voter ID:</div>
+                      <div>Full Name:</div>
+                      <div>Date of Birth:</div>
+                      <div>Constituency:</div>
+                    </div>
+                    <div className="description">
+                      <div>{auth.user.voter_id}</div>
+                      <div>{auth.user.full_name}</div>
+                      <div>{dob}</div>
+                      <div>{auth.user.constituency}</div>
+                    </div>
                   </div>
-                  <div className="description">
-                    <div>Voter ID</div>
-                    <div>Full Name</div>
-                    <div>Date of Birth</div>
-                    <div>Constituency</div>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

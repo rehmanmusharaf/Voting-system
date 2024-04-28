@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./Countdown.css";
-const Countdown = () => {
-  // { targetDate }
-  const targetDate = new Date("2024-12-31T00:00:00");
+import { Link } from "react-router-dom";
+const Countdown = ({ election }) => {
+  const currentdate = new Date();
+  // let [electionend, setElectionend] = useState(false);
+  const targetDate =
+    new Date(election.startdate) >= currentdate
+      ? new Date(election.startdate)
+      : new Date(election.enddate);
+  // if (new Date(election.startdate) <= currentdate) {
+  // electionend = true;
+  // console.log("Election End COndition Run");
+  // setElectionend(true);
+  // }
   const calculateTimeLeft = () => {
     const difference = targetDate - new Date();
     let timeLeft = {};
-
     if (difference > 0) {
       timeLeft = {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -20,8 +29,10 @@ const Countdown = () => {
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
+  function timesup() {}
   useEffect(() => {
+    // console.log(targetDate);
+    // electiondatecheck();
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
@@ -44,43 +55,37 @@ const Countdown = () => {
   });
 
   return (
-    <div className="timer container">
-      <h2 className=" display-5">Election Will Start In</h2>
-      {timerComponents.length ? (
-        <div className="intervals-parent">{timerComponents}</div>
-      ) : (
-        <span>Time's up!</span>
-      )}
-      <h2 className=" display-7 text-start ">Registered Parties</h2>
-      <div className="">
-        <div class="">
-          <section class="mx-auto my-5" style={{ maxWidth: "23rem" }}>
-            <div class="card testimonial-card mt-2 mb-3">
-              <img
-                src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2831%29.jpg"
-                class="card-up "
-                alt="woman avatar"
-              />
-              <div class="avatar mx-auto white">
-                <img
-                  src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2831%29.jpg"
-                  class="rounded-circle img-fluid"
-                  alt="woman avatar"
-                />
-              </div>
-              <div class="card-body text-center">
-                <h4 class="card-title font-weight-bold">Martha Smith</h4>
-                <hr />
-                <p>
-                  <i class="fas fa-quote-left"></i> Lorem ipsum dolor sit amet,
-                  consectetur adipisicing elit. Eos, adipisci
-                </p>
-              </div>
-            </div>
-          </section>
-        </div>
+    <>
+      <div className="timer container pb-5 ">
+        <h3 className=" text-decoration-underline ">
+          {election.election_name}
+        </h3>
+        {new Date(election.startdate) <= currentdate ? (
+          <>
+            <h2 className=" display-5">Election Will End In</h2>
+          </>
+        ) : (
+          <h2 className=" display-5">Election Will Start In</h2>
+        )}
+        {timerComponents.length ? (
+          <div className="intervals-parent">{timerComponents}</div>
+        ) : (
+          <>
+            {timesup()}
+            <span>Time's up!</span>
+          </>
+        )}
+        {new Date(election.startdate) <= currentdate ? (
+          <Link
+            className="button position-relative"
+            style={{ top: "20px" }}
+            to="/ballot"
+          >
+            Cast vote
+          </Link>
+        ) : null}
       </div>
-    </div>
+    </>
   );
 };
 

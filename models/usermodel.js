@@ -5,12 +5,12 @@ const jwt = require("jsonwebtoken");
 const userSchema = new mongoose.Schema({
   voter_id: {
     type: String,
+    unique: true,
     required: [true, "Please enter your voter ID!"],
   },
   full_name: {
     type: String,
     required: [true, "Please enter your Full Name!"],
-    unique: true,
   },
   dob: {
     type: Date,
@@ -36,6 +36,16 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     default: "user",
+  },
+  vote_status: {
+    status: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    to: {
+      type: mongoose.ObjectId,
+    },
   },
   resetPasswordToken: String,
   resetPasswordTime: Date,

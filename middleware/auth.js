@@ -18,13 +18,14 @@ exports.isAuthenticated = async (req, res, next) => {
       token,
       process.env.JWT_SECRET_KEY
     );
-    req.user = await usermodel.findById(decoded.id);
-    // if (req.user.role !== "user") {
-    //   res
+    req.user = await usermodel.findById(decoded?.id);
+    // if (req?.user?.role !== "user") {
+    //   return res
     //     .status(400)
     //     .json({ success: false, message: "You Don't have User Credentials" });
-    // }
+    // } else {
     next();
+    // }
   } catch (error) {
     // console.log(error.message);
     res.status(500).json({ success: false, message: error.message, error });

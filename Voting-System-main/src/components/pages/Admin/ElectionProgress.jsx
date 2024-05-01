@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ElectionProgress.css";
 import { toast } from "react-toastify";
 import axios from "axios";
-const ElectionProgress = ({ castedvoters }) => {
+const ElectionProgress = ({ castedvoterslength }) => {
   const [votecount, setVotecount] = useState([]);
   const getvotecount = async () => {
     try {
@@ -12,9 +12,15 @@ const ElectionProgress = ({ castedvoters }) => {
           withCredentials: true,
         }
       );
-      console.log("vote count response:", data);
+      // console.log("vote count response:", data);
       if (data.success) {
         setVotecount(data.partiesvotecount);
+        console.log(
+          "casteed voters:",
+          castedvoterslength,
+          "votecount :",
+          data.partiesvotecount
+        );
       } else {
         toast.error("Please reload your Site to Get Proper Response");
       }
@@ -24,27 +30,35 @@ const ElectionProgress = ({ castedvoters }) => {
   };
   useEffect(() => {
     getvotecount();
-    // console.log("casteed voters:", castedvoters);
   }, []);
   return (
     <>
       <hr />
-      <div className="container div-center mt-4 ">
+      <div className="container div-center mt-4" style={{ background: "none" }}>
         <h3>Parties Progress</h3>
         <ul id="skill" className=" ">
           {votecount.length > 0 &&
-            castedvoters &&
+            castedvoterslength >= 0 &&
             votecount.map((value, index) => {
               return (
                 <li>
                   <span
-                    class="bar graphic-design"
+                    class="bar graphic-design text-center fs-5 start-0 end-0 m-0 "
                     style={{
                       width: `${
-                        (value.vote_count / castedvoters.length) * 100
+                        castedvoterslength == 0
+                          ? 0
+                          : (value.vote_count / castedvoterslength) * 100
                       }%`,
                     }}
-                  ></span>
+                  >
+                    {castedvoterslength == 0
+                      ? 0
+                      : Math.floor(
+                          (value.vote_count / castedvoterslength) * 100
+                        )}
+                    %
+                  </span>
                   <h4 className=" position-relative" style={{ top: "-30px" }}>
                     {value.party_name}
                   </h4>

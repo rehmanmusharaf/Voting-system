@@ -12,7 +12,8 @@ function Home() {
   let [symbols] = useSymbols();
   const [auth] = useAuth();
   useEffect(() => {
-    console.log("election array is:", election);
+    // console.log("Election Name is:", process.env.REACT_APP_electionname);
+    // console.log("election array is:", election);
     // console.log("Symbol is:", symbols);
   }, [symbols]);
   return (

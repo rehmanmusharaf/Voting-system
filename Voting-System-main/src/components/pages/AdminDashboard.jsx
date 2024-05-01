@@ -5,17 +5,20 @@ import { useSymbols } from "../Context/Symbol";
 import ElectionProgress from "./Admin/ElectionProgress";
 import axios from "axios";
 import StartElectionForm from "./Admin/StartElectionForm";
+import { useElections } from "../Context/election";
 const AdminDashboard = () => {
+  let [election] = useElections();
   const [symbols] = useSymbols();
   const [voters, setVoters] = useState();
   const [castedvoters, setCastedvoters] = useState();
-
+  const [castedvoterscount, setCastedvoterscount] = useState();
   // State variables to manage election status, candidates, parties, etc.
   const [electionStatus, setElectionStatus] = useState("Not Started");
   const [candidates, setCandidates] = useState([]);
   const [parties, setParties] = useState([]);
   const [realTimeResults, setRealTimeResults] = useState({});
   const [rigisterparties, setRegisterparties] = useState(symbols);
+
   // Function to start the election
   const startElection = () => {
     setElectionStatus("Started");
@@ -68,12 +71,17 @@ const AdminDashboard = () => {
   const getvotecasted = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_server}/getallusers`,
+        `${process.env.REACT_APP_server}/getvotedusers`,
         {
           withCredentials: true,
         }
       );
+      console.log("voted users data", data.users);
       setCastedvoters(data.users);
+      // console.log("data of casted voters:", data);
+      let count = data.castedVotersCount;
+      // console.log("count is:", count);
+      setCastedvoterscount(count);
     } catch (error) {
       // console.log("during voters get error:",error)
     }
@@ -82,6 +90,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     getvoters();
     getvotecasted();
+    console.log("election is:", election);
     // Logic to fetch real-time results
   }, []);
 
@@ -89,11 +98,17 @@ const AdminDashboard = () => {
     <>
       <Progress
         voters={voters && voters.length}
-        castedvoterslength={castedvoters && castedvoters.length}
+        castedvoterslength={castedvoterscount && castedvoterscount}
       />
-      <StartElectionForm />
 
-      <ElectionProgress castedvoters={castedvoters} />
+      {election && election.length > 0 ? (
+        <StartElectionForm updateelection={true} election={election} />
+      ) : (
+        <StartElectionForm updateelection={false} />
+      )}
+      {castedvoterscount >= 0 && (
+        <ElectionProgress castedvoterslength={castedvoterscount} />
+      )}
       <div className="admin-dashboard">
         <h1>Election Commission Dashboard</h1>
         <div className="status">

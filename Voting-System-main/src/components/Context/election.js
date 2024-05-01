@@ -12,7 +12,8 @@ const Election = ({ children }) => {
           withCredentials: true,
         }
       );
-      return !(data.success == true);
+
+      return data.success == true;
     } catch (error) {
       console.log("Somethign went wrnong during update the election status!");
       return false;
@@ -41,10 +42,10 @@ const Election = ({ children }) => {
             console.log("response is :", response);
             return response;
           } else {
-            return false;
+            return true;
           }
         });
-        console.log("after filtering array result is:", result);
+        // console.log("after filtering array result is:", result);
         setElection([...result]);
       } else {
         console.log(data);

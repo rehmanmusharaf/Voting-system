@@ -3,16 +3,19 @@ import "./BallotPage.css"; // Import your CSS file for styling
 import { useSymbols } from "../Context/Symbol";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useElections } from "../Context/election";
 const BallotPage = () => {
   let [symbols] = useSymbols();
-
+  let [election] = useElections();
+  // let [parties, setParties] = useState(election);
+  console.log("election Parties are:", election);
   const [selectedparty, setSelectedparty] = useState(null);
 
   const handleSubmitBallot = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_server}/api/castvote`,
+        `${process.env.REACT_APP_server}/api/castvote?electionname=${process.env.REACT_APP_electionname}`,
         selectedparty,
         {
           withCredentials: true,
@@ -21,9 +24,11 @@ const BallotPage = () => {
       if (data.success) {
         toast.success("Vote Cast Successfully");
         return;
-      } else {
-        toast.error("You ALready Cast Your Vote");
+      } else if (!data.success) {
+        toast.error(data.message);
+        return;
       }
+      toast.error("Something Went Wrong");
     } catch (error) {
       console.log(error);
       toast.error("Something Went Wrong");
@@ -43,32 +48,45 @@ const BallotPage = () => {
             <form>
               <div id="quizAns" className="hAns">
                 {symbols &&
-                  symbols.map((value, index) => [
-                    <>
-                      <input
-                        type="radio"
-                        name="quiz"
-                        id="quizo"
-                        value={value.party_name}
-                      />
-                      <label
-                        htmlFor="quizo"
-                        onClick={() =>
-                          setSelectedparty({
-                            party_name: value.party_name,
-                            symbol_name: value.symbol_name,
-                          })
-                        }
-                        className={`${
-                          selectedparty?.party_name == value.party_name
-                            ? "border-dark"
-                            : ""
-                        } `}
-                      >
-                        {value.party_name}
-                      </label>
-                    </>,
-                  ])}
+                  election &&
+                  symbols.map(
+                    (value, index) => {
+                      return (
+                        <>
+                          {election[0].parties.includes(value.party_name) ? (
+                            <>
+                              <input
+                                type="radio"
+                                name="quiz"
+                                id="quizo"
+                                value={value.party_name}
+                              />
+                              <label
+                                htmlFor="quizo"
+                                onClick={() =>
+                                  setSelectedparty({
+                                    party_name: value.party_name,
+                                    symbol_name: value.symbol_name,
+                                  })
+                                }
+                                className={`${
+                                  selectedparty?.party_name == value.party_name
+                                    ? "border-dark"
+                                    : ""
+                                } `}
+                              >
+                                {value.party_name}
+                              </label>
+                            </>
+                          ) : (
+                            ""
+                          )}
+                        </>
+                      );
+                    }
+                    // </>,
+                    // ]
+                  )}
               </div>
               <button
                 onClick={handleSubmitBallot}

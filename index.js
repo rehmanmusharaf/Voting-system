@@ -47,6 +47,8 @@ app.get("/getvotecount", vote);
 app.post("/startelection", election);
 app.get("/getelection", election);
 app.get("/updatestatus", election);
+app.delete("/deleteelection", election);
+app.put("/updateelection", election);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

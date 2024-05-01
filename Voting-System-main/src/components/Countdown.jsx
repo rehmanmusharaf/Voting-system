@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Countdown.css";
 import { Link } from "react-router-dom";
+import ElectionProgress from "./pages/Admin/ElectionProgress";
+import axios from "axios";
 const Countdown = ({ election }) => {
-  const currentdate = new Date();
+  let [index, setIndex] = useState(0);
+  const [currentdate, setCurrentdate] = useState(new Date());
+  const [castedvoterscount, setCastedvoterscount] = useState();
   // let [electionend, setElectionend] = useState(false);
   const targetDate =
     new Date(election.startdate) >= currentdate
@@ -30,15 +34,42 @@ const Countdown = ({ election }) => {
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   function timesup() {}
+
+  const getvotecasted = async () => {
+    try {
+      console.log("get voted User date function RUn!");
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_server}/getvotedusers`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("voted users data", data);
+      // setCastedvoters(data.users);
+      setCastedvoterscount(data.castedVotersCount);
+    } catch (error) {
+      // console.log("during voters get error:",error)
+    }
+  };
+
   useEffect(() => {
     // console.log(targetDate);
     // electiondatecheck();
+    // setCurrentdate(new Date());
+    // console.log("election end date", election.enddate);
+    if (new Date() >= new Date(election.enddate) && index == 0) {
+      getvotecasted();
+      setIndex(1);
+    }
+    // if (election) {
+    // console.log("election data on countdown componenet:", election);
+    // }
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
     return () => clearTimeout(timer);
-  });
+  }, [timeLeft, election]);
 
   const timerComponents = [];
 
@@ -49,7 +80,7 @@ const Countdown = ({ election }) => {
 
     timerComponents.push(
       <span key={interval} className="child-intrevals">
-        <span className=" display-4 ">{timeLeft[interval]}</span> {interval}{" "}
+        <span className=" display-4 ">{timeLeft[interval]}</span> {interval}
       </span>
     );
   });
@@ -62,20 +93,32 @@ const Countdown = ({ election }) => {
         </h3>
         {new Date(election.startdate) <= currentdate ? (
           <>
-            <h2 className=" display-5">Election Will End In</h2>
+            {new Date(election.enddate) < currentdate ? (
+              <>
+                <h2>Result Announcement</h2>
+                {castedvoterscount >= 0 && (
+                  <ElectionProgress castedvoterslength={castedvoterscount} />
+                )}
+              </>
+            ) : (
+              <h2 className=" display-5">Election Will End In</h2>
+            )}
           </>
         ) : (
           <h2 className=" display-5">Election Will Start In</h2>
         )}
         {timerComponents.length ? (
-          <div className="intervals-parent">{timerComponents}</div>
+          <>
+            <div className="intervals-parent">{timerComponents}</div>
+          </>
         ) : (
           <>
             {timesup()}
             <span>Time's up!</span>
           </>
         )}
-        {new Date(election.startdate) <= currentdate ? (
+        {new Date(election.startdate) <= currentdate &&
+        new Date(election.enddate) > currentdate ? (
           <Link
             className="button position-relative"
             style={{ top: "20px" }}

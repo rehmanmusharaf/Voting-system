@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 // import "./SignUp.css";
+// import { format } from "date-fns";
 import axios from "axios";
 import { toast } from "react-toastify";
 // import { useConstituency } from "./Context/constituency";
 import { useSymbols } from "../../Context/Symbol";
-const StartElectionForm = () => {
+import Loader from "../../Loader";
+import Dialogueconfimation from "../../Dialogueconfimation";
+import { useNavigate } from "react-router-dom";
+const StartElectionForm = ({ updateelection, election }) => {
+  const navigate = useNavigate();
   const [symbols] = useSymbols();
   const [electionName, setElectionName] = useState("");
   const [startElection, setStartElection] = useState("");
@@ -23,7 +28,6 @@ const StartElectionForm = () => {
     }
     console.log(parties);
   };
-
   // Check if start time is earlier than end time
   const validateTimes = (start, end) => {
     if (start && end) {
@@ -34,6 +38,7 @@ const StartElectionForm = () => {
         return false;
       }
     }
+
     return true;
   };
 
@@ -65,13 +70,11 @@ const StartElectionForm = () => {
     setEndElection(value);
     console.log(value);
     // Validate times
-
     setIsValid(validateTimes(startElection, value));
   };
   const handlesubmit = async (e) => {
     try {
       e.preventDefault();
-      // console.log(startElection, parties, endElection, electionName);
       const { data } = await axios.post(
         `${process.env.REACT_APP_server}/startelection`,
         {
@@ -85,12 +88,15 @@ const StartElectionForm = () => {
         }
       );
       if (data.success) {
+        // setElectionName("");
+        // setStartElection("");
+        // setEndElection("");
+        // setParties([]);
+        // setIsValid(true);
+        window.location.href = "/success";
+        // window.location.reload();
+        // navigate('/success');
         toast.success("Election Created Successfully!");
-        setElectionName("");
-        setStartElection("");
-        setEndElection("");
-        setParties([]);
-        setIsValid(true);
       } else {
         toast.error("Check the Field you enetered is not Valid!");
       }
@@ -99,9 +105,106 @@ const StartElectionForm = () => {
       toast.error("Something Went Wrong!");
     }
   };
+  const handleDeleteElection = async () => {
+    try {
+      // console.log("If Condition Run!");
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_server}/deleteelection?electionname=${process.env.REACT_APP_electionname}`,
+        { withCredentials: true }
+      );
+      if (data.success) {
+        window.location.reload();
+        toast.success("Election Data has Been Deleted Successfully");
+      } else {
+        toast.error("Please Try AGain Their is Some Problems");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Internal Problem Please After A While");
+    }
+  };
+  const handleupdate = async (e) => {
+    try {
+      console.log("Start date is:", startElection);
+      console.log("end date is:", endElection);
+      e.preventDefault();
+      // const { data } = await axios.put(
+      //   `${process.env.REACT_APP_server}/updateelection?id=${election[0]._id}`,
+      //   {
+      //     election_name: electionName,
+      //     parties,
+      //     startdate: startElection,
+      //     enddate: endElection,
+      //   },
+      //   {
+      //     withCredentials: true,
+      //   }
+      // );
+      // if (data.success) {
+      //   window.location.reload();
+      //   toast.success("Election Updated Successfully!");
+      // } else {
+      //   toast.error("Check the Field you enetered is not Valid!");
+      // }
+    } catch (error) {
+      console.log(error);
+      toast.error("omething Went Wrong");
+    }
+  };
+  useEffect(() => {
+    // console.log("election is", election);
+    if (updateelection) {
+      setElectionName(election[0].election_name);
+      let mystring1 = new Date(election[0].startdate);
+      // let mystring2 = new Date(election[0].enddate);
+      // // let mystring1 = election[0].startdate;
+      // // let mystring2 = election[0].enddate;
+      // mystring1 = mystring1.toLocaleString();
+      // mystring2 = mystring2.toLocaleString();
+      // mystring1 = `${mystring1.getFullYear}-${(mystring1.getMonth() + 1)
+      //   .toString()
+      //   .padStart(2, "0")}-${mystring1
+      //   .getDate()
+      //   .toString()
+      //   .padStart(2, "0")}T${mystring1
+      //   .getHours()
+      //   .toString()
+      //   .padStart(2, "0")}:${mystring1
+      //   .getMinutes()
+      //   .toString()
+      //   .padStart(2, "0")}`;
+      // console.log("strat and end date:", mystring1, mystring2);
+      setStartElection(mystring1);
+      // setEndElection(mystring2);
+      let mystring = election[0].startdate;
+      const indexOf = mystring.indexOf(".");
+      let extractedString;
+      if (indexOf !== -1) {
+        extractedString = mystring.substring(0, indexOf);
+        // console.log("extractde string is:", extractedString);
+        setStartElection(extractedString);
+      }
+      let mystring2 = election[0].enddate;
+      const indexOf2 = mystring.indexOf(".");
+      let extractedString2;
+      if (indexOf2 !== -1) {
+        extractedString2 = mystring2.substring(0, indexOf2);
+        // console.log("extractde string is:", extractedString2);
+        setEndElection(extractedString2);
+      }
+      setEndElection(election[0].enddate);
+      let allselectedparties = election[0].parties;
+      setParties([...allselectedparties]);
+      // setIsValid(true);
+    }
+  }, []);
   return (
     <>
       <div className="content">
+        <Dialogueconfimation
+          title={"Do You Want To Delete Election And Detail Regarding it"}
+          handleDeleteElection={handleDeleteElection}
+        />
         <main>
           <div className="intro">
             <form onSubmit={handlesubmit}>
@@ -122,20 +225,37 @@ const StartElectionForm = () => {
                     return (
                       <div className="w-50 d-flex">
                         <label htmlFor="vehicle1">{value.party_name}</label>
-                        <input
-                          type="checkbox"
-                          id="vehicle1"
-                          name="vehicle1"
-                          value={value.party_name}
-                          onChange={handleCheckboxChange}
-                          style={{ width: "10%", marginLeft: "3px" }}
-                        />
+                        {updateelection ? (
+                          <input
+                            type="checkbox"
+                            id="vehicle1"
+                            checked={
+                              updateelection
+                                ? parties.includes(value.party_name)
+                                  ? true
+                                  : false
+                                : ""
+                            }
+                            name="vehicle1"
+                            value={value.party_name}
+                            onChange={handleCheckboxChange}
+                            style={{ width: "10%", marginLeft: "3px" }}
+                          />
+                        ) : (
+                          <input
+                            type="checkbox"
+                            id="vehicle1"
+                            name="vehicle1"
+                            value={value.party_name}
+                            onChange={handleCheckboxChange}
+                            style={{ width: "10%", marginLeft: "3px" }}
+                          />
+                        )}
                       </div>
                     );
                   })}
-                {/* <br /> */}
+                <br />
               </div>
-
               <label for="startelectiondate">Election Start date</label>
               <input
                 type="datetime-local"
@@ -154,7 +274,32 @@ const StartElectionForm = () => {
                 required
                 onChange={handleEndChange}
               />
-              <input type="submit" value="Submit" />
+              <div
+                className=" d-flex justify-content-between "
+                style={{ marginRight: "20px" }}
+              >
+                {updateelection ? (
+                  <div
+                    type="button"
+                    className="btn btn-success me-1 "
+                    onClick={handleupdate}
+                  >
+                    Update Election
+                  </div>
+                ) : (
+                  <input type="submit" value="Submit" />
+                )}
+                {updateelection ? (
+                  <div
+                    className="btn btn-danger"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    Delete Election
+                  </div>
+                ) : null}
+              </div>
             </form>
           </div>
         </main>

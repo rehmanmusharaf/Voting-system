@@ -244,16 +244,21 @@ router.get("/getvotedusers", isAdminAuthenticated, async (req, res, nesxt) => {
     const { page } = req.query || 0;
     const userperpage = 5;
     totalusers = await usermodel
-      .find({ vote_status: { status: true }, role: "user" })
+      .find({ "vote_status.status": true, role: "user" })
       .countDocuments();
     // console.log("total user who cast vote:", totalusers);
     const users = await usermodel
-      .find({ vote_status: { status: true }, role: "user" })
+      .find({ "vote_status.status": true, role: "user" })
       .skip(page * userperpage)
       .limit(userperpage);
     return res
       .status(200)
-      .json({ success: true, message: "user who vote successfully", users });
+      .json({
+        success: true,
+        message: "user who vote successfully",
+        users,
+        castedVotersCount: totalusers,
+      });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

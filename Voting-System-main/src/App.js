@@ -13,6 +13,8 @@ import PageNotFound from "./components/PageNoteFound";
 import Loader from "./components/Loader.jsx";
 import UserProtectedRoute from "./components/Routes/UserProtectedRoute.jsx";
 import AdminProtectedRoute from "./components/Routes/AdminProtectedRoute.jsx";
+import ElectionProtectedRoute from "./components/Routes/ElectionProtectedRoute.jsx";
+import SuccessPage from "./components/pages/SuccessPage.jsx";
 function App() {
   return (
     <>
@@ -20,6 +22,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" exact Component={Home} />
+          <Route path="/success" exact Component={SuccessPage} />
+
           <Route path="/admin-login" exact Component={AdminLogin} />
           <Route path="/voter-signup" exact Component={SignUp} />
           <Route path="/voter-login" exact Component={VoterLogin} />
@@ -32,7 +36,7 @@ function App() {
           <Route path="/admin" element={<AdminProtectedRoute />}>
             <Route path="admin-dashboard" exact Component={AdminDashboard} />
           </Route>
-          <Route path="/ballot" element={<UserProtectedRoute />}>
+          <Route path="/ballot" element={<ElectionProtectedRoute />}>
             <Route path="" element={<BallotPage />} />
           </Route>
           <Route path="/loading" exact Component={Loader} />

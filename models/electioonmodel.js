@@ -23,7 +23,7 @@ const electionSchema = new mongoose.Schema({
     type: String,
     enum: {
       values: allowedNames,
-      message: "{VALUE} is not allowed inthis election.",
+      message: "{VALUE} is not allowed in this election.",
     },
   },
   electionstatus: {

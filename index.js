@@ -19,7 +19,6 @@ app.use("/", express.static("uploads"));
 const user = require("./Controlers/user.js");
 const { connecttodb } = require("./db/Db.js");
 const constituency = require("./Controlers/constituency.js");
-const __dirname = path.resolve();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,6 +28,7 @@ connecttodb();
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
 app.post("/api/create-user", user);
 app.post("/api/activation", user);
 app.post("/api/login", user);
@@ -59,11 +59,7 @@ app.listen(port, () => {
 app.use(express.static(path.join(__dirname, "/frontend/build")));
 
 app.get("*", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "Voting-System-main", "build", "index.html")
-  );
+  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
   console.log("Resolved file path:", filePath);
   res.sendFile(filePath);
 });
-
-app.use(express.static(path.join(__dirname, "/Voting-System-main/build")));

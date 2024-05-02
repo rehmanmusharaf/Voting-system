@@ -50,10 +50,7 @@ function Home() {
           </section>
           {/*----------------Registration/Login Section---------------- */}
           <section className="registration-login-section py-5 px-4">
-            <div
-              className="container div-center"
-              style={{ background: "none" }}
-            >
+            <div className="container" style={{ background: "none" }}>
               <h2 className="text-center mb-5">Registration / Login</h2>
               <div className="row">
                 <div className="col-lg-4 mb-4">
@@ -189,7 +186,7 @@ function Home() {
           </section>
           {/*----------------Contact Us Section---------------- */}
           <section className="contact-us py-3 px-4 my-4">
-            <div className="container div-center">
+            <div className="container ">
               <div className="row">
                 <div className="col-12 mb-4">
                   <h2 className="section-heading text-center mb-5">
@@ -228,7 +225,7 @@ function Home() {
 
       {/* // :; // } */}
 
-      {!auth.user && (
+      {/* {!auth.user && (
         <div className="content">
           <main>
             <div className="head-wrap">
@@ -266,7 +263,7 @@ function Home() {
             />
           </main>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

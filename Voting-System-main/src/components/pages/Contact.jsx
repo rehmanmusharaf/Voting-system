@@ -8,12 +8,12 @@ import HomeIcon from "@mui/icons-material/Home";
 function Contact() {
   return (
     <>
-      <div className="container-fluid div-center">
+      <div className="container-fluid ">
         <h2 className="contact ">CONTACT US</h2>
 
         {/*----------------Contact Us Section---------------- */}
         <section className="contact-us py-3 px-4 my-4">
-          <div className="container div-center">
+          <div className="container">
             <div className="row">
               <div className="col-12 mb-4">
                 <h2 className="section-heading text-center mb-5">Contact Us</h2>

@@ -42,7 +42,7 @@ const ElectionProgress = ({ castedvoterslength, admin }) => {
   return (
     <>
       <hr />
-      <div className="container div-center mt-4" style={{ background: "none" }}>
+      <div className="container mt-4" style={{ background: "none" }}>
         <h3>Parties Progress</h3>
         <ul id="skill" className=" ">
           {votecount.length > 0 &&

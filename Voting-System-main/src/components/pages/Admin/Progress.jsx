@@ -5,7 +5,7 @@ const Progress = ({ voters, castedvoterslength }) => {
   let [symbols] = useSymbols();
   useEffect(() => {}, []);
   return (
-    <div className="container div-center mt-1 ">
+    <div className="container mt-1 ">
       <h3 className="">Election Statistics</h3>
       <div className="row justify-content-center ">
         <div className="col-md-3 col-sm-6">

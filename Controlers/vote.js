@@ -148,15 +148,15 @@ router.get("/getpublicvotecount", async (req, res, next) => {
           { party_name: 1, vote_count: 1 }
         )
         .sort({ vote_count: -1 });
-      let users = await usermodel.find({ "votestatus.status": true });
+      // let users = await usermodel.find({ "votestatus.status": true });
 
-      users.foreach((user, index) => {
-        sendMail({
-          email: user.voter_id,
-          subject: "Election Result",
-          message: `${partiesvotecount[0].party_name} is the Winner with Vote Count ${partiesvotecount[0].vote_count}`,
-        });
-      });
+      // users.foreach((user, index) => {
+      //   sendMail({
+      //     email: user.voter_id,
+      //     subject: "Election Result",
+      //     message: `${partiesvotecount[0].party_name} is the Winner with Vote Count ${partiesvotecount[0].vote_count}`,
+      //   });
+      // });
       return res.status(200).json({
         success: true,
         message: `party with their vote count`,

@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./VoterDashboard.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Context/Auth";
+import image1 from "./images/bg-image.jpg";
+import { useElections } from "../Context/election";
 function VoterDashboard() {
   let [auth] = useAuth();
+  let [election] = useElections();
   let [dob, setDob] = useState(null);
   useEffect(() => {
     if (auth.user) {
@@ -22,21 +25,27 @@ function VoterDashboard() {
             <div className="election-info">
               <div className="info-wrapper">
                 <h3>Upcoming Election</h3>
-                <ul className="election-date">
-                  <li>
-                    <span>Opens: </span>Thursday,February 8th, 2024
-                  </li>
-                  <li>
-                    <span>Closes: </span>Thursday,February 8th, 2024
-                  </li>
-                  <li>
-                    <span>Hours: </span>&nbsp;9:00 a.m. to 5.00 p.m.
-                  </li>
-                </ul>
-                <ul className="info">
-                  <li>Gilgit, Pakistan</li>
-                  <li>Member of Parliament</li>
-                </ul>
+                {election && election.length > 0 && (
+                  <>
+                    <ul className="election-date">
+                      <li>
+                        <span>Opens: </span>
+                        {election[0]?.startdate}
+                      </li>
+                      <li>
+                        <span>Closes: </span>
+                        {election[0]?.enddate}
+                      </li>
+                      <li>
+                        <span>Hours: </span>&nbsp;9:00 a.m. to 5.00 p.m.
+                      </li>
+                    </ul>
+                    <ul className="info">
+                      <li>Gilgit, Pakistan</li>
+                      <li>Member of Parliament</li>
+                    </ul>
+                  </>
+                )}
               </div>
             </div>
             <div className="voter-info">
@@ -75,7 +84,7 @@ function VoterDashboard() {
               </Link>
             </div>
             <div className="img-div">
-              <img src="./images/bg-image.jpg" />
+              <img src={image1} />
             </div>
           </div>
         </main>

@@ -173,7 +173,7 @@ button:hover {
 
 .about-section {
   position: relative;
-  /* background-image: url("./images/about-bg.jpeg"); Replace 'background-image.jpg' with your actual image */
+  background-image: url("./images/about-bg.jpeg");
   background-size: cover;
   background-position: center;
   color: #fff;

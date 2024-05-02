@@ -2,9 +2,11 @@ import React from "react";
 import "./About.css";
 import Usama from "./images/usama.jpg";
 import about from "./images/about-intro.webp";
-import male from "./images/maleProfile.jpg";
 import subhan from "./images/subhan.jpg";
 import furqan from "./images/furqan.jpg";
+import samama from "./images/samama.jpg";
+import zohaib from "./images/zohaib.jpg";
+import rehman from "./images/rehman.jpg";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -18,6 +20,7 @@ function About() {
     <>
       <div className="conatiner-fluid">
         <h2 className="about">ABOUT US</h2>
+
         {/*----------------Introduction Section---------------- */}
         <section className="introduction row text-center py-3 px-4 my-4">
           <div className="col-lg-6 mb-md-5 my-lg-auto">
@@ -84,7 +87,7 @@ function About() {
               </div>
               <div className="col-lg-4 mb-md-5 mb-5">
                 <div className="card p-3">
-                  <img src={male} className="card-img-top" alt="..." />
+                  <img src={rehman} className="card-img-top" alt="..." />
                   <div className="card-body">
                     <h5 className="card-title text-center">Muhammad Rehman</h5>
                     <p className="card-text text-center">
@@ -132,7 +135,7 @@ function About() {
             <div className="row mt-5">
               <div className="col-lg-4 mb-md-5 mb-5">
                 <div className="card p-3">
-                  <img src={male} className="card-img-top" alt="..." />
+                  <img src={zohaib} className="card-img-top" alt="..." />
                   <div className="card-body">
                     <h5 className="card-title text-center">Zohaib-ul-Hassan</h5>
                     <p className="card-text text-center">
@@ -155,7 +158,7 @@ function About() {
               </div>
               <div className="col-lg-4 mb-md-5 mb-5">
                 <div className="card p-3">
-                  <img src={male} className="card-img-top" alt="..." />
+                  <img src={samama} className="card-img-top" alt="..." />
                   <div className="card-body">
                     <h5 className="card-title text-center">Samama Babar</h5>
                     <p className="card-text text-center">

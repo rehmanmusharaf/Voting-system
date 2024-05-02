@@ -37,7 +37,7 @@ const BallotPage = () => {
 
   return (
     // ballot-container
-    <div className=" container div-center">
+    <div className=" container">
       <div className="vote-option-container flex-column rounded ">
         <h2>Online Ballot</h2>
         <p>Please select exactly one candidate from your constituency:</p>
@@ -53,7 +53,7 @@ const BallotPage = () => {
                     (value, index) => {
                       return (
                         <>
-                          {election[0].parties.includes(value.party_name) ? (
+                          {election[0]?.parties?.includes(value.party_name) ? (
                             <>
                               <input
                                 type="radio"

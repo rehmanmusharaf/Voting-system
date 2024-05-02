@@ -43,7 +43,7 @@ const List = () => {
         crossorigin="anonymous"
       />
       <section className="section">
-        <div className="container div-center">
+        <div className="container">
           {/* <div className="justify-content-center row">
             <div className="col-lg-12">
               <div className="candidate-list-widgets mb-4">

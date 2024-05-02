@@ -19,6 +19,7 @@ app.use("/", express.static("uploads"));
 const user = require("./Controlers/user.js");
 const { connecttodb } = require("./db/Db.js");
 const constituency = require("./Controlers/constituency.js");
+const __dirname = path.resolve();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

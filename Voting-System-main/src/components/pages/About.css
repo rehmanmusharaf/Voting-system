@@ -1,0 +1,36 @@
+.about {
+  display: flex;
+  height: 70vh;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  background-image: url("./images/about-bg.jpeg");
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-size: 100px;
+  margin-top: 0;
+}
+
+/*----------------Introduction Section---------------- */
+
+.introduction {
+  color: #006400;
+}
+
+/*----------------Teams Section---------------- */
+
+.team-section .card-link {
+  color: #000000;
+}
+
+/*----------------Contact Us Section---------------- */
+
+.contact-us {
+  color: #006400;
+}
+
+.contact-us .link {
+  color: #006400;
+}

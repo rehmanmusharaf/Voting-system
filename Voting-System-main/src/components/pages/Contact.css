@@ -1,0 +1,20 @@
+.contact {
+  display: flex;
+  height: 70vh;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  background-image: url("./images/about-bg.jpeg");
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-size: 100px;
+  margin-top: 0px;
+}
+
+@media screen and (width < 768px) {
+  .contact {
+    font-size: 40px;
+  }
+}

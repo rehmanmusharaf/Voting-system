@@ -2,7 +2,7 @@ import React from "react";
 import "./SuccessPage.css";
 import { Link, useNavigate } from "react-router-dom";
 
-const SuccessPage = () => {
+const SuccessPage = ({ message }) => {
   const navigate = useNavigate();
   const handleBackClick = (e) => {
     e.preventDefault();
@@ -15,8 +15,8 @@ const SuccessPage = () => {
         <div className="rt-container">
           <div className="col-rt-12">
             <div className="rt-heading">
-              <h1>Registration Successful Message Example</h1>
-              <p>A registration successful message box in HTML and CSS. </p>
+              {/* <h1>Registration Successful Message Example</h1>
+              <p>A registration successful message box in HTML and CSS. </p> */}
             </div>
           </div>
         </div>
@@ -63,9 +63,7 @@ const SuccessPage = () => {
                   <h3 id="status">Success</h3>
                 </div>
                 <div id="lower-side">
-                  <p id="message">
-                    Congratulations, your account has been successfully created.
-                  </p>
+                  <p id="message">{message}</p>
                   <button id="contBtn" onClick={handleBackClick}>
                     Go Back
                   </button>

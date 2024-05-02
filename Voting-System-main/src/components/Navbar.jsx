@@ -85,6 +85,20 @@ function Navbar() {
                 Admin
               </Link>
             </li>
+            <li className="nav-item">
+              <Link
+                to="/contact"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                Contact Us
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/about" className="nav-links" onClick={closeMobileMenu}>
+                About us
+              </Link>
+            </li>
           </ul>
           {button && (
             <>

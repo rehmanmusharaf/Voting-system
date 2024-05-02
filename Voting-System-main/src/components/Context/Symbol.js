@@ -29,7 +29,7 @@ const Symbols = ({ children }) => {
     getsymbols();
   }, []);
   return (
-    <SymbolContext.Provider value={[symbols]}>
+    <SymbolContext.Provider value={[symbols, setSymbols]}>
       {children}
     </SymbolContext.Provider>
   );

@@ -2,27 +2,35 @@ import React, { useEffect, useState } from "react";
 import "./ElectionProgress.css";
 import { toast } from "react-toastify";
 import axios from "axios";
-const ElectionProgress = ({ castedvoterslength }) => {
+import { useElections } from "../../Context/election";
+const ElectionProgress = ({ castedvoterslength, admin }) => {
+  const [election] = useElections();
   const [votecount, setVotecount] = useState([]);
   const getvotecount = async () => {
     try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_server}/getvotecount`,
-        {
-          withCredentials: true,
-        }
-      );
-      // console.log("vote count response:", data);
-      if (data.success) {
-        setVotecount(data.partiesvotecount);
-        console.log(
-          "casteed voters:",
-          castedvoterslength,
-          "votecount :",
-          data.partiesvotecount
+      if (election) {
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_server}/${
+            admin
+              ? "getvotecount"
+              : `getpublicvotecount?electionname=${election[0].election_name}`
+          }`,
+          {
+            withCredentials: true,
+          }
         );
-      } else {
-        toast.error("Please reload your Site to Get Proper Response");
+        // console.log("vote count response:", data);
+        if (data.success) {
+          setVotecount(data.partiesvotecount);
+          console.log(
+            "casteed voters:",
+            castedvoterslength,
+            "votecount :",
+            data.partiesvotecount
+          );
+        } else {
+          toast.error("Please reload your Site to Get Proper Response");
+        }
       }
     } catch (error) {
       console.log("vote ocunt error:", error);
@@ -59,7 +67,10 @@ const ElectionProgress = ({ castedvoterslength }) => {
                         )}
                     %
                   </span>
-                  <h4 className=" position-relative" style={{ top: "-30px" }}>
+                  <h4
+                    className=" position-relative text-start"
+                    style={{ top: "-30px" }}
+                  >
                     {value.party_name}
                   </h4>
                 </li>

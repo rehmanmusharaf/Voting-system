@@ -7,10 +7,15 @@ const { sendToken } = require("../utils/sendToken.js");
 const { isAdminAuthenticated } = require("../middleware/auth.js");
 router.post("/startelection", isAdminAuthenticated, async (req, res, next) => {
   try {
+    // const pstOffset = 5 * 60 * 60 * 1000;
     let { election_name, parties, startdate, enddate } = req.body;
     console.log("Election detail:", election_name, parties, startdate, enddate);
     startdate = new Date(startdate);
+    // startdate = new Date(startdate.getTime());
+    // console.log("pstDate is:", pstDate);
     enddate = new Date(enddate);
+    // enddate = new Date(enddate.getTime() + pstOffset);
+
     console.log("Election detail:", election_name, parties, startdate, enddate);
     if (!election_name || !parties || !startdate || !enddate) {
       return res.status(400).json({

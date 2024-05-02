@@ -16,6 +16,18 @@ const StartElectionForm = ({ updateelection, election }) => {
   const [endElection, setEndElection] = useState("");
   const [isValid, setIsValid] = useState(true);
   const [parties, setParties] = useState([]);
+  function convertUtcToPst(utcDateStr) {
+    // Create a Date object from the UTC date string
+    const utcDate = new Date(utcDateStr);
+
+    // Add 5 hours to convert from UTC to PST
+    const pstOffset = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
+    const pstDate = new Date(utcDate.getTime() + pstOffset);
+
+    // Return the PST date in ISO 8601 format
+    return pstDate.toISOString();
+  }
+
   const handleCheckboxChange = (event) => {
     const value = event.target.value;
     const isChecked = event.target.checked;
@@ -128,34 +140,35 @@ const StartElectionForm = ({ updateelection, election }) => {
       console.log("Start date is:", startElection);
       console.log("end date is:", endElection);
       e.preventDefault();
-      // const { data } = await axios.put(
-      //   `${process.env.REACT_APP_server}/updateelection?id=${election[0]._id}`,
-      //   {
-      //     election_name: electionName,
-      //     parties,
-      //     startdate: startElection,
-      //     enddate: endElection,
-      //   },
-      //   {
-      //     withCredentials: true,
-      //   }
-      // );
-      // if (data.success) {
-      //   window.location.reload();
-      //   toast.success("Election Updated Successfully!");
-      // } else {
-      //   toast.error("Check the Field you enetered is not Valid!");
-      // }
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_server}/updateelection?id=${election[0]._id}`,
+        {
+          election_name: electionName,
+          parties,
+          startdate: startElection,
+          enddate: endElection,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (data.success) {
+        window.location.reload();
+        toast.success("Election Updated Successfully!");
+      } else {
+        toast.error("Check the Field you enetered is not Valid!");
+      }
     } catch (error) {
       console.log(error);
       toast.error("omething Went Wrong");
     }
   };
   useEffect(() => {
-    // console.log("election is", election);
+    console.log("election is", election);
     if (updateelection) {
       setElectionName(election[0].election_name);
-      let mystring1 = new Date(election[0].startdate);
+
+      // let mystring1 = new Date(election[0].startdate);
       // let mystring2 = new Date(election[0].enddate);
       // // let mystring1 = election[0].startdate;
       // // let mystring2 = election[0].enddate;
@@ -174,9 +187,9 @@ const StartElectionForm = ({ updateelection, election }) => {
       //   .toString()
       //   .padStart(2, "0")}`;
       // console.log("strat and end date:", mystring1, mystring2);
-      setStartElection(mystring1);
+      // setStartElection(mystring1);
       // setEndElection(mystring2);
-      let mystring = election[0].startdate;
+      let mystring = convertUtcToPst(election[0].startdate);
       const indexOf = mystring.indexOf(".");
       let extractedString;
       if (indexOf !== -1) {
@@ -184,15 +197,15 @@ const StartElectionForm = ({ updateelection, election }) => {
         // console.log("extractde string is:", extractedString);
         setStartElection(extractedString);
       }
-      let mystring2 = election[0].enddate;
-      const indexOf2 = mystring.indexOf(".");
+      let mystring2 = convertUtcToPst(election[0].enddate);
+      const indexOf2 = mystring2.indexOf(".");
       let extractedString2;
       if (indexOf2 !== -1) {
         extractedString2 = mystring2.substring(0, indexOf2);
         // console.log("extractde string is:", extractedString2);
         setEndElection(extractedString2);
       }
-      setEndElection(election[0].enddate);
+      // setEndElection(election[0].enddate);
       let allselectedparties = election[0].parties;
       setParties([...allselectedparties]);
       // setIsValid(true);
@@ -295,6 +308,7 @@ const StartElectionForm = ({ updateelection, election }) => {
                     type="button"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
+                    onClick={handleDeleteElection}
                   >
                     Delete Election
                   </div>

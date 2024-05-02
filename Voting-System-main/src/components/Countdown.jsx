@@ -3,7 +3,9 @@ import "./Countdown.css";
 import { Link } from "react-router-dom";
 import ElectionProgress from "./pages/Admin/ElectionProgress";
 import axios from "axios";
+import { useAuth } from "./Context/Auth";
 const Countdown = ({ election }) => {
+  const [auth] = useAuth();
   let [index, setIndex] = useState(0);
   const [currentdate, setCurrentdate] = useState(new Date());
   const [castedvoterscount, setCastedvoterscount] = useState();
@@ -17,8 +19,11 @@ const Countdown = ({ election }) => {
   // console.log("Election End COndition Run");
   // setElectionend(true);
   // }
+
   const calculateTimeLeft = () => {
     const difference = targetDate - new Date();
+    // console.log("target date", targetDate);
+    // console.log("calculated time left!", difference);
     let timeLeft = {};
     if (difference > 0) {
       timeLeft = {
@@ -37,16 +42,14 @@ const Countdown = ({ election }) => {
 
   const getvotecasted = async () => {
     try {
-      console.log("get voted User date function RUn!");
       const { data } = await axios.get(
-        `${process.env.REACT_APP_server}/getvotedusers`,
+        `${process.env.REACT_APP_server}/getpublicvotedusers`,
         {
           withCredentials: true,
         }
       );
-      console.log("voted users data", data);
-      // setCastedvoters(data.users);
       setCastedvoterscount(data.castedVotersCount);
+      // }
     } catch (error) {
       // console.log("during voters get error:",error)
     }
@@ -55,7 +58,7 @@ const Countdown = ({ election }) => {
   useEffect(() => {
     // console.log(targetDate);
     // electiondatecheck();
-    // setCurrentdate(new Date());
+    setCurrentdate(new Date());
     // console.log("election end date", election.enddate);
     if (new Date() >= new Date(election.enddate) && index == 0) {
       getvotecasted();
@@ -95,7 +98,11 @@ const Countdown = ({ election }) => {
           <>
             {new Date(election.enddate) < currentdate ? (
               <>
-                <h2>Result Announcement</h2>
+                {auth.user ? (
+                  <h2>Result Announcement</h2>
+                ) : (
+                  <h2>Plaese Login To See The Result</h2>
+                )}
                 {castedvoterscount >= 0 && (
                   <ElectionProgress castedvoterslength={castedvoterscount} />
                 )}

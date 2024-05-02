@@ -251,14 +251,31 @@ router.get("/getvotedusers", isAdminAuthenticated, async (req, res, nesxt) => {
       .find({ "vote_status.status": true, role: "user" })
       .skip(page * userperpage)
       .limit(userperpage);
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "user who vote successfully",
-        users,
-        castedVotersCount: totalusers,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "user who vote successfully",
+      users,
+      castedVotersCount: totalusers,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Problem",
+      error: error.message,
+    });
+  }
+});
+router.get("/getpublicvotedusers", isAuthenticated, async (req, res, nesxt) => {
+  try {
+    totalusers = await usermodel
+      .find({ "vote_status.status": true, role: "user" })
+      .countDocuments();
+    return res.status(200).json({
+      success: true,
+      message: "user who vote successfully",
+      castedVotersCount: totalusers,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

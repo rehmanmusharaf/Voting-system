@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.css";
+import { ThemeProvider } from "@mui/material/styles";
 import Home from "./components/pages/Home";
 import "./App.css";
 import Navbar from "./components/Navbar";
@@ -15,6 +17,9 @@ import UserProtectedRoute from "./components/Routes/UserProtectedRoute.jsx";
 import AdminProtectedRoute from "./components/Routes/AdminProtectedRoute.jsx";
 import ElectionProtectedRoute from "./components/Routes/ElectionProtectedRoute.jsx";
 import SuccessPage from "./components/pages/SuccessPage.jsx";
+import Contact from "./components/pages/Contact.jsx";
+import Footer from "./components/Footer.jsx";
+import About from "./components/pages/About.jsx";
 function App() {
   return (
     <>
@@ -27,6 +32,8 @@ function App() {
           <Route path="/admin-login" exact Component={AdminLogin} />
           <Route path="/voter-signup" exact Component={SignUp} />
           <Route path="/voter-login" exact Component={VoterLogin} />
+          <Route path="/contact" exact Component={Contact} />
+          <Route path="/about" exact Component={About} />
           {/* <Route path="/voter" Component={<UserProtectedRoute />}>
             <Route path="voter-dashboard" exact Component={VoterDashboard} />
           </Route> */}
@@ -47,6 +54,7 @@ function App() {
           />
           <Route path="*" exact Component={PageNotFound} />
         </Routes>
+        <Footer />
       </Router>
     </>
   );

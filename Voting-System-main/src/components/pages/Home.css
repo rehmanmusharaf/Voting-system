@@ -4,13 +4,9 @@ body {
   padding: 0;
 }
 
-.container {
+.container-fluid {
   margin: 0;
   padding: 0;
-  background-color: #fff;
-}
-h2 {
-  margin: 15px 0 0;
 }
 
 .content {
@@ -100,4 +96,153 @@ button:hover {
   .accounts .button {
     width: 50%;
   }
+}
+
+/*----------------Hero Section---------------- */
+
+.hero-section {
+  min-height: 80vh;
+  color: #006400;
+}
+
+/*----------------Utilities---------------- */
+
+.gradient-background {
+  background: linear-gradient(
+    to bottom right,
+    #66cd00,
+    #ffffff
+  ); /* Gradient background */
+
+  /* background-color: #003366; */
+  border: 1px solid #006400;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+/*----------------Registration/Logins Section---------------- */
+
+.registration-login-section {
+  background: linear-gradient(
+    to bottom right,
+    #66cd00,
+    #ffffff
+  ); /* Gradient background */
+
+  border: 1px solid #006400;
+}
+
+.registration-login-section h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+  color: #000000;
+}
+
+.card {
+  color: #000000;
+  border: none;
+  transition: box-shadow 0.3s ease-in-out;
+  background-color: #96db79;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.card-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.card .card-text {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+@media screen and (min-width: 992px) {
+  .registration-login-section .card .card-text {
+    height: 5.8rem;
+  }
+}
+
+/*----------------About Section---------------- */
+
+.about-section {
+  position: relative;
+  /* background-image: url("./images/about-bg.jpeg"); Replace 'background-image.jpg' with your actual image */
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: 100px 0;
+}
+
+.about-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Adjust the opacity as needed */
+}
+
+.about-content {
+  position: relative;
+  z-index: 1;
+}
+
+.about-content h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.about-content p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/*----------------How it works Section---------------- */
+
+.how-it-works-section {
+  background: linear-gradient(
+    to bottom right,
+    #66cd00,
+    #ffffff
+  ); /* Gradient background */
+  border: 1px solid #006400;
+}
+
+.how-it-works-section h2 {
+  font-size: 36px;
+  margin-bottom: 40px;
+  color: #000000;
+}
+
+@media screen and (min-width: 992px) {
+  .how-it-works-section .card .card-text {
+    height: 5.8rem;
+  }
+}
+
+/*----------------Parties Section---------------- */
+
+.parties-details {
+  height: 70vh;
+}
+
+/*----------------Election-Schedule Section---------------- */
+
+.election-schedule {
+  background: linear-gradient(
+    to bottom right,
+    #66cd00,
+    #ffffff
+  ); /* Gradient background */
+  height: 70vh;
+  border: 1px solid #006400;
 }

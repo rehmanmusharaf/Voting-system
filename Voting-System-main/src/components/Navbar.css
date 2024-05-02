@@ -1,11 +1,10 @@
 .navbar {
-  background: #043b14;
+  background: linear-gradient(to bottom, #006400, #008000);
   height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
-  position: sticky;
   top: 0;
   z-index: 999;
 }
@@ -36,7 +35,7 @@
 
 .nav-menu {
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(5, auto);
   grid-gap: 10px;
   list-style: none;
   text-align: center;
@@ -94,7 +93,7 @@
   }
 
   .nav-menu.active {
-    background: #242222;
+    background: #006400;
     left: 0;
     opacity: 1;
     transition: all 0.5s ease;

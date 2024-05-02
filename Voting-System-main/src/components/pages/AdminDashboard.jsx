@@ -6,6 +6,7 @@ import ElectionProgress from "./Admin/ElectionProgress";
 import axios from "axios";
 import StartElectionForm from "./Admin/StartElectionForm";
 import { useElections } from "../Context/election";
+import PartiesCreation from "./Admin/PartiesCreation.jsx";
 const AdminDashboard = () => {
   let [election] = useElections();
   const [symbols] = useSymbols();
@@ -100,15 +101,24 @@ const AdminDashboard = () => {
         voters={voters && voters.length}
         castedvoterslength={castedvoterscount && castedvoterscount}
       />
-
+      <hr />
+      <div className="container div-center">
+        <h2 className="text-start">Start Election/Modify Election</h2>
+      </div>
       {election && election.length > 0 ? (
         <StartElectionForm updateelection={true} election={election} />
       ) : (
         <StartElectionForm updateelection={false} />
       )}
       {castedvoterscount >= 0 && (
-        <ElectionProgress castedvoterslength={castedvoterscount} />
+        <ElectionProgress castedvoterslength={castedvoterscount} admin={true} />
       )}
+      <hr />
+      <div className="container div-center">
+        <h2 className=" text-start ">Register Symbol</h2>
+      </div>
+      <PartiesCreation />
+
       <div className="admin-dashboard">
         <h1>Election Commission Dashboard</h1>
         <div className="status">

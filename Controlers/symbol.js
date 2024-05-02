@@ -7,6 +7,9 @@ const multer = require("multer");
 const { sendToken } = require("../utils/sendToken.js");
 const fs = require("fs");
 const cloudinary = require("../utils/cloudinary");
+const votemodel = require("../models/votemodel.js");
+const { isAdminAuthenticated } = require("../middleware/auth.js");
+const { isAuthenticated } = require("../middleware/auth.js");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads");
@@ -31,12 +34,14 @@ async function uploadImages(files) {
           }
         });
       });
+      console.log("result is:", result);
       let image = {
-        public_id: result.original_filename,
+        public_id: result.public_id,
         url: result.secure_url,
       };
       images.push(image);
-      deletefile(result.originalname);
+
+      // deletefile(result.originalname);
     }
     // console.log("images is", images);
     // Now you can work with the 'images' array after all uploads are done
@@ -46,46 +51,24 @@ async function uploadImages(files) {
     return [];
   }
 }
+async function deletecloudinaryimage(publicId) {
+  cloudinary.uploader.destroy(publicId, (error, result) => {
+    if (error) {
+      console.error("Error deleting file:", error);
+    } else {
+      console.log("File deleted:", result);
+    }
+  });
+}
 
 router.post(
   "/symbol/registersymbol",
-  upload.array("files", 2),
+  isAdminAuthenticated,
+  upload.array("files"),
   async (req, res, next) => {
     try {
-      let images = await uploadImages(req.files);
-      // console.log("req.files is:", req.files);
-      // req.files.map((file, index) => {
-      //   cloudinary.uploader.upload(file.path, async function (err, result) {
-      //     if (err) {
-      //       console.log(err);
-      //       return res.status(500).json({
-      //         success: false,
-      //         message: "Error",
-      //       });
-      //     }
-      //     let image = { public_id: result.public_id, url: result.url };
-      //      images.push({ ...image });
-      //     // console.log(`Image${index} result is:`, result);
-      //     deletefile(result.originalname);
-      //   });
-      // });
-      // console.log("images is", images);
-      //   if(req.file)
-      //   {
-
-      //     cloudinary.uploader.upload(req.file.path, function (err, result) {
-      //       if (err) {
-      //       console.log(err);
-      //       return res.status(500).json({
-      //         success: false,
-      //         message: "Error",
-      //       });
-      //     }
-      //     console.log("Image result is:", result);
-      //   });
-
-      // }
-      // console.log("req.body is :", req.body);
+      console.log("req.files is:", req.files);
+      // console.log("cloudinary images", images);
       const { party_name, code, chairman, symbol_name } = req.body;
       if (!party_name || !code || !req.files || !chairman || !symbol_name) {
         if (req.files) {
@@ -114,7 +97,13 @@ router.post(
           .status(400)
           .json({ success: false, message: "This Symbol Already Registered" });
       }
-      await symbolmodel.create({
+      let images = await uploadImages(req.files);
+      if (images.length == 0) {
+        images.forEach((element) => {
+          deletecloudinaryimage(element.public_id);
+        });
+      }
+      const symbolresult = await symbolmodel.create({
         party_name,
         symbol_name,
         code,
@@ -124,14 +113,21 @@ router.post(
       // req.files.map((file)=>{
       //  return { public_id: file.originalname, url: file.filename }
       // }),
+      req.files.map((file, index) => {
+        deletefile(file.filename);
+      });
+      await votemodel.create({
+        party_name,
+        symbol: symbolresult._id,
+        vote_count: 0,
+      });
+
       return res.status(200).json({
         success: true,
         message: `${party_name} symbol created successfully`,
+        party: symbolresult,
       });
     } catch (error) {
-      // return res.status(200).json({ success: false });
-      // console.log(error);
-      // console.log(error.message);
       return res.status(500).json({
         success: false,
         message: "Something Went Wrong",
@@ -152,34 +148,46 @@ function deletefile(filename) {
   return "image Deleted Successfully;";
 }
 
-router.delete("/symbol/deletesymbol/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!id) {
-      return res
-        .status(400)
-        .json({ success: false, message: "symbol code not recieved!" });
+router.delete(
+  "/symbol/deletesymbol/:id",
+  isAdminAuthenticated,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        return res
+          .status(400)
+          .json({ success: false, message: "symbol code not recieved!" });
+      }
+      const deletesymbolresult = await symbolmodel.findOneAndDelete({
+        _id: id,
+      });
+      if (!deletesymbolresult) {
+        return res
+          .status(400)
+          .json({ success: false, message: "no symbol exist with this code" });
+      }
+      deletesymbolresult.image.forEach((element) => {
+        deletecloudinaryimage(element.public_id);
+      });
+      deletefile(deletesymbolresult.image.url);
+      await votemodel.findOneAndDelete({
+        party_name: deletesymbolresult.party_name,
+      });
+      return res.status(200).json({
+        success: true,
+        message: "Symbol deleted Successfully!",
+        symbol: deletesymbolresult,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+        error: error.message,
+      });
     }
-    const deletesymbolresult = await symbolmodel.findOneAndDelete({ _id: id });
-    if (!deletesymbolresult) {
-      return res
-        .status(400)
-        .json({ success: false, message: "no symbol exist with this code" });
-    }
-    deletefile(deletesymbolresult.image.url);
-    return res.status(200).json({
-      success: true,
-      message: "Symbol deleted Successfully!",
-      symbol: deletesymbolresult,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error: error.message,
-    });
   }
-});
+);
 router.put("/symbol/updatesymbol/:id", async (req, res) => {
   try {
     const { id } = req.params;

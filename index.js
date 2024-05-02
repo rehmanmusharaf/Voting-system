@@ -54,3 +54,15 @@ app.get("/getpublicvotedusers", user);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "Voting-System-main", "build", "index.html")
+  );
+  console.log("Resolved file path:", filePath);
+  res.sendFile(filePath);
+});
+
+app.use(express.static(path.join(__dirname, "/Voting-System-main/build")));

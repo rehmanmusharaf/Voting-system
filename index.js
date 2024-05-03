@@ -59,9 +59,13 @@ app.listen(port, () => {
 app.use(express.static(path.join(__dirname, "/Voting-System-main/build")));
 
 app.get("*", (req, res) => {
+<<<<<<< HEAD
   res.sendFile(
     path.join(__dirname, "Voting-System-main", "build", "index.html")
   );
   console.log("Resolved file path:", filePath);
   res.sendFile(filePath);
+=======
+  res.sendFile(path.join(__dirname, "Voting-System-main", "build", "index.html"));
+>>>>>>> 371d7b671460b5b41be8ae88b6168e4a3faaf583
 });

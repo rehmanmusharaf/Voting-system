@@ -2,7 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 8080;
 const symbol = require("./Controlers/symbol.js");
 const vote = require("./Controlers/vote.js");
 const election = require("./Controlers/election.js");

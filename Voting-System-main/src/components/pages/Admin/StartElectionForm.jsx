@@ -8,7 +8,9 @@ import { useSymbols } from "../../Context/Symbol";
 import Loader from "../../Loader";
 import Dialogueconfimation from "../../Dialogueconfimation";
 import { useNavigate } from "react-router-dom";
-const StartElectionForm = ({ updateelection, election }) => {
+import { useElections } from "../../Context/election";
+const StartElectionForm = ({ updateelection }) => {
+  let [election] = useElections();
   const navigate = useNavigate();
   const [symbols] = useSymbols();
   const [electionName, setElectionName] = useState("");
@@ -165,7 +167,7 @@ const StartElectionForm = ({ updateelection, election }) => {
   };
   useEffect(() => {
     console.log("election is", election);
-    if (updateelection) {
+    if (updateelection && election.length > 0) {
       setElectionName(election[0].election_name);
 
       // let mystring1 = new Date(election[0].startdate);
@@ -210,7 +212,7 @@ const StartElectionForm = ({ updateelection, election }) => {
       setParties([...allselectedparties]);
       // setIsValid(true);
     }
-  }, []);
+  }, [election]);
   return (
     <>
       <div className="content">

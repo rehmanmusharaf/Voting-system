@@ -73,7 +73,6 @@ const Countdown = ({ election }) => {
 
     return () => clearTimeout(timer);
   }, [timeLeft, election]);
-
   const timerComponents = [];
 
   Object.keys(timeLeft).forEach((interval) => {

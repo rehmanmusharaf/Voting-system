@@ -56,6 +56,7 @@ function PartiesSelection() {
         setSymbols((prev) => {
           return [...prev, data.party];
         });
+        // setSymbols
         setLoading(false);
         return;
       } else {

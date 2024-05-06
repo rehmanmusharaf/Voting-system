@@ -9,7 +9,7 @@ const election = require("./Controlers/election.js");
 // var multer = require("multer");
 const cors = require("cors");
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.REACT_URL,
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
@@ -57,6 +57,15 @@ app.listen(port, () => {
 });
 
 app.use(express.static(path.join(__dirname, "/Voting-System-main/build")));
+let pathjoin = path.join(__dirname, "/Voting-System-main/build");
+let pathjoin2 = path.join(
+  __dirname,
+  "Voting-System-main",
+  "build",
+  "index.html"
+);
+console.log(pathjoin);
+console.log(pathjoin2);
 //ok
 app.get("*", (req, res) => {
   res.sendFile(

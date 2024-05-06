@@ -62,9 +62,9 @@ app.get("*", (req, res) => {
   res.sendFile(
     path.join(__dirname, "Voting-System-main", "build", "index.html")
   );
-  console.log("Resolved file path:", filePath);
-  res.sendFile(filePath);
-  res.sendFile(
-    path.join(__dirname, "Voting-System-main", "build", "index.html")
-  );
+  // console.log("Resolved file path:", filePath);
+  // res.sendFile(filePath);
+  // res.sendFile(
+  //   path.join(__dirname, "Voting-System-main", "build", "index.html")
+  // );
 });
